@@ -1,0 +1,1 @@
+import Tool from "@/tools/unit-converter/page"; export default Tool;
