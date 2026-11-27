@@ -1,0 +1,1 @@
+import Tool from"@/tools/loads/page";export default Tool;
