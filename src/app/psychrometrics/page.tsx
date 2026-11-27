@@ -1,0 +1,1 @@
+import Tool from"@/tools/psychrometrics/page";export default Tool;
