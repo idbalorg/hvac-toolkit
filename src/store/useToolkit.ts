@@ -1,1 +1,23 @@
-"use client";import{create}from"zustand";import{persist,createJSONStorage}from"zustand/middleware";import type{UnitSystem,Quantity}from"@/lib/units";export type SavedValue={quantity:Quantity;name:string;siValue:number};export type SavedResult={id:string;toolId:string;label:string;timestamp:number;values:SavedValue[]};type Store={system:UnitSystem;pressure:number;history:SavedResult[];pending:SavedResult|null;setSystem:(v:UnitSystem)=>void;setPressure:(v:number)=>void;save:(v:SavedResult)=>void;rename:(id:string,label:string)=>void;remove:(id:string)=>void;clear:()=>void;setPending:(v:SavedResult|null)=>void;clearPending:()=>void};export const useToolkit=create<Store>()(persist((set)=>({system:"SI",pressure:101.325,history:[],pending:null,setSystem:system=>set({system}),setPressure:pressure=>set({pressure}),save:r=>set(s=>({history:[r,...s.history.filter(x=>x.id!==r.id)].slice(0,100)})),rename:(id,label)=>set(s=>({history:s.history.map(r=>r.id===id?{...r,label}:r)})),remove:id=>set(s=>({history:s.history.filter(r=>r.id!==id)})),clear:()=>set({history:[]}),setPending:pending=>set({pending}),clearPending:()=>set({pending:null})})),{name:"hvac-toolkit-history-v1",storage:createJSONStorage(()=>localStorage)}));
+"use client";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import type { UnitSystem, Quantity } from "@/lib/units";
+export type SavedValue = { quantity: Quantity; name: string; siValue: number };
+export type SavedResult = { id: string; toolId: string; label: string; timestamp: number; values: SavedValue[] };
+type Store = {
+ system: UnitSystem; pressure: number; history: SavedResult[]; pending: SavedResult | null;
+ setSystem: (v: UnitSystem) => void; setPressure: (v: number) => void; save: (v: SavedResult) => void;
+ rename: (id: string, label: string) => void; remove: (id: string) => void; clear: () => void;
+ setPending: (v: SavedResult | null) => void; clearPending: () => void;
+};
+export const useToolkit = create<Store>()(persist((set) => ({
+ system: "SI", pressure: 101.325, history: [], pending: null,
+ setSystem: system => set({ system }),
+ setPressure: pressure => set({ pressure }),
+ save: r => set(s => ({ history: [r, ...s.history.filter(x => x.id !== r.id)].slice(0, 100) })),
+ rename: (id, label) => set(s => ({ history: s.history.map(r => r.id === id ? { ...r, label } : r) })),
+ remove: id => set(s => ({ history: s.history.filter(r => r.id !== id) })),
+ clear: () => set({ history: [] }),
+ setPending: pending => set({ pending }),
+ clearPending: () => set({ pending: null })
+}), { name: "hvac-toolkit-history-v1", storage: createJSONStorage(() => localStorage) }));
