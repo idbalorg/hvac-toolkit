@@ -1,0 +1,1 @@
+import type{Metadata}from"next";import"./globals.css";import ToolShell from"@/components/ToolShell";export const metadata:Metadata={title:"HVAC Toolkit",description:"HVAC and MEP engineering calculators"};export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body><ToolShell>{children}</ToolShell></body></html>}
